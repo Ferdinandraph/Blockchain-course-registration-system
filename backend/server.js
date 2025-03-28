@@ -8,13 +8,20 @@ const studentRoutes = require('./routes/student');
 const adminRoutes = require('./routes/admin');
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB error:', err));
+
+app.use(cors({
+    origin: '*', // Temporary wildcard
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+
 
 // Ethereum setup
 const provider = new ethers.JsonRpcProvider(`https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_PROJECT_ID}`);
